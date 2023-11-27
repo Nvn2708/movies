@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Movies Time</a>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <!-- <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li> -->
+   
+        <li class="nav-item" >
+          <select class="form-select" aria-label="Default select example" (change)="onChange($event)">
+            <option selected >Select your gener</option>
+            <option [value]="geners" *ngFor="let geners of genersList;let i = index;">{{geners}}</option>
+      
+          </select>
+        </li>
+        <li class="nav-item">
+          <select class="form-select" aria-label="Default select example" (change)="onChange($event)">
+            <option selected>Select Year</option>
+            <option [value]="year" *ngFor="let year of yearsList">{{year}}</option>
+      
+          </select>
+        </li>
+      </ul>
+    </div>
+
+    <form class="d-flex" role="search">
+      <input
+        class="form-control me-2"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+      />
+      <button class="btn btn-dark" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+

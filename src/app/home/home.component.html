@@ -1,0 +1,7 @@
+<div style="z-index: 1; position: fixed; width: 100%; top: 0;">
+  <app-navbar (change)="moviesList($event)" ></app-navbar>
+</div>
+
+<div class="mt-5">
+  <app-movies-list [filteredValue]="filterAction"></app-movies-list>
+</div>
