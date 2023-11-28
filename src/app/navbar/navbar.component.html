@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Movies Time</a>
+    <a class="navbar-brand text-white" href="#">Movies Time</a>
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
@@ -14,7 +14,7 @@
             <option [value]="geners" *ngFor="let geners of genersList;let i = index;">{{geners}}</option>
       
           </select>
-        </li>
+        </li>&nbsp;
         <li class="nav-item">
           <select class="form-select" aria-label="Default select example" (change)="onChange($event)">
             <option selected>Select Year</option>
@@ -31,8 +31,11 @@
         type="search"
         placeholder="Search"
         aria-label="Search"
+        [(ngModel)]="searchTerm"
+        [ngModelOptions]="{standalone: true}"
+        (ngModelChange)="searchFeature()"
       />
-      <button class="btn btn-dark" type="submit">Search</button>
+      <button class="btn btn-light" (click)="sendSearchTerm()">Search</button>
     </form>
   </div>
 </nav>

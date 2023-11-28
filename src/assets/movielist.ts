@@ -1,4 +1,6 @@
-export const moviesData = [
+import { Movie } from "src/app/movies.model";
+
+export const moviesData : Movie[] = [
   {
     year: 2013,
     title: 'Rush',

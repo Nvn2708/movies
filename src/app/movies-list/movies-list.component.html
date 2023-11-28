@@ -2,18 +2,12 @@
 
 <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button> -->
 
-<div class="container mt-5">
+<div class="m-5 pt-3">
   <div class="d-flex flex-wrap">
-    <div
-      class="card cardwidth m-2"
-      *ngFor="let movie of newList"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasRight"
-      aria-controls="offcanvasRight"
-      (click)="onCardClick(movie)"
-    >
-      <img [src]="oneMovie.info.image_url" class="card-img-top" alt="..." />
+    <div class="card cardwidth m-2" *ngFor="let movie of newList | paginate : config ; let i = index" type="button"
+      data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+      (click)="onCardClick(movie)">
+      <img [src]="movie.info.image_url" class="card-img-top" style="height: 100px; width: 100px;" alt="..." />
       <div class="card-body">
         <h5>{{ movie.title }} ({{ movie.year }})</h5>
         <!-- <p>
@@ -24,34 +18,33 @@
       </div>
     </div>
   </div>
+  <div class="text-center mt-3">
+    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+  </div>
 </div>
 
 <!-- Off canvas -->
 
-<div
-  class="offcanvas offcanvas-end w-100"
-  tabindex="-1"
-  id="offcanvasRight"
-  aria-labelledby="offcanvasRightLabel"
->
+<div class="offcanvas offcanvas-end w-50" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasRightLabel">
       {{ movieDetails?.title }} ({{ movieDetails?.year }})
     </h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
 
   <div class="offcanvas-body">
     <div class="container">
-        <div class="card">
+      <div class="card">
 
-        </div>
+      </div>
     </div>
     <p>{{ movieDetails?.info.plot }}</p>
+
+    <li for="">Rating : {{ movieDetails?.info.rating }} </li>
+    <li for="">RunTime : {{ movieDetails?.info.running_time_secs }}</li>
+    <li for="">Directors : {{ movieDetails?.info.directors }}</li>
+    <li for="">Rank : {{ movieDetails?.info.rank }}</li>
+    <li for="">Cast : {{ movieDetails?.info.actors }}</li>
   </div>
 </div>

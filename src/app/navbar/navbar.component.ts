@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MoviesServiceService } from '../movies-service.service';
+import { Movie } from '../movies.model';
 
 @Component({
   selector: 'app-navbar',
@@ -7,16 +8,17 @@ import { MoviesServiceService } from '../movies-service.service';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  public newList: any;
+  public newList!: Movie[];
   public genersList: any;
   public yearsList: any;
+  public searchTerm: any;
 
   @Output() moviesList = new EventEmitter<any>();
 
-  constructor(private movieService: MoviesServiceService) {}
+  constructor(private movieService: MoviesServiceService) { }
 
   ngOnInit() {
-    this.movieService.getMoviesData().subscribe((newMovieList) => {
+    this.movieService.getMoviesData().subscribe((newMovieList: Movie[]) => {
       this.newList = newMovieList;
     });
     this.getGenerList();
@@ -25,7 +27,8 @@ export class NavbarComponent implements OnInit {
   getGenerList() {
     let newGener: any = [];
     let yearList: any = [];
-    this.newList.forEach((element: any) => {
+
+    this.newList.forEach((element: Movie) => {
       let data = element.info.genres;
       yearList.push(element.year);
 
@@ -42,4 +45,13 @@ export class NavbarComponent implements OnInit {
     console.log(event.target.value)
     this.moviesList.emit(event.target.value);
   }
+
+  searchFeature() {
+     this.moviesList.emit(this.searchTerm);
+  }
+
+  sendSearchTerm(){
+    this.moviesList.emit(this.searchTerm);
+  }
+
 }
