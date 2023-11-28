@@ -19,26 +19,31 @@ export class MoviesListComponent implements OnInit, OnChanges {
   public oneMovie!: Movie;
   public movieDetails: any;
   public filteredAction: any;
+  public displyGridMovies: any[] = [];
+  protected showFilterData = false;
+
   config: any;
   isSelectedParent!: boolean;
   selectedParent!: number;
 
   @Input() set filteredValue(value: any) {
     this.filteredAction = value;
-    console.log(this.filteredAction);
   }
 
-  constructor(private movieService: MoviesServiceService) { }
+  constructor(private movieService: MoviesServiceService) {}
 
   ngOnInit() {
-    console.log(this.filteredValue);
-    this.movieService.getMoviesData().subscribe((newMovieList : Movie[]) => {
+    this.movieService.getMoviesData().subscribe((newMovieList: Movie[]) => {
       this.moviesList = newMovieList;
       this.newList = this.moviesList;
       this.oneMovie = newMovieList[0];
     });
 
-    console.log(this.newList);
+    this.moviesList.forEach((movie: any, index: number) => {
+      if (movie.info.rank <= 5) {
+        this.displyGridMovies.push(movie);
+      }
+    });
 
     this.config = {
       itemsPerPage: 18,
@@ -47,23 +52,25 @@ export class MoviesListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    debugger;
     this.newList = this.moviesList;
     const applyFilterValue = changes['filteredValue'].currentValue;
-
-    this.newList = this.newList.filter((newMovie: Movie) => {
-      return (
-        newMovie.year.toString().toLowerCase() === applyFilterValue.toString().toLowerCase() ||
-        newMovie?.info?.genres?.includes(applyFilterValue) || newMovie.title.toLocaleLowerCase().includes(applyFilterValue.toLowerCase())
-      );
-    });
-
-    console.log(this.newList);
+    if (applyFilterValue) {
+      this.showFilterData = true;
+      this.newList = this.newList.filter((newMovie: Movie) => {
+        return (
+          newMovie.year.toString().toLowerCase() ===
+            applyFilterValue.toString().toLowerCase() ||
+          newMovie?.info?.genres?.includes(applyFilterValue) ||
+          newMovie.title
+            .toLocaleLowerCase()
+            .includes(applyFilterValue.toLowerCase())
+        );
+      });
+    }
   }
 
   onCardClick(movie: any) {
     this.movieDetails = movie;
-    console.log(movie);
   }
 
   pageChanged(event: any) {

@@ -1,50 +1,96 @@
-<!-- {{ oneMovie | json }} -->
-
-<!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button> -->
-
-<div class="m-5 pt-3">
-  <div class="d-flex flex-wrap">
-    <div class="card cardwidth m-2" *ngFor="let movie of newList | paginate : config ; let i = index" type="button"
-      data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
-      (click)="onCardClick(movie)">
-      <img [src]="movie.info.image_url" class="card-img-top" style="height: 100px; width: 100px;" alt="..." />
-      <div class="card-body">
-        <h5>{{ movie.title }} ({{ movie.year }})</h5>
-        <!-- <p>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p> -->
-        <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+<div *ngIf="showFilterData">
+  <div class="m-5 pt-3">
+    <div class="d-flex flex-wrap">
+      <div
+        class="card cardwidth m-2"
+        *ngFor="let movie of newList | paginate : config; let i = index"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasRight"
+        aria-controls="offcanvasRight"
+        (click)="onCardClick(movie)"
+      >
+        <img
+          [src]="movie.info.image_url"
+          class="card-img-top"
+          style="height: 100px; width: 100px"
+          alt="movie"
+          onerror="this.src='https://imgs.search.brave.com/jMPHFRyncWAsk-MmJKBMnP7U6TwY7L5Nu7uBY094v-o/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE1/MzY0NDAxMzY2Mjgt/ODQ5YzE3N2U3NmEx/P3E9ODAmdz0xMDAw/JmF1dG89Zm9ybWF0/JmZpdD1jcm9wJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4Tkh4OFky/bHVaVzFoZkdWdWZE/QjhmREI4Zkh3dw.jpeg'"
+        />
+        <div class="card-body">
+          <h5>{{ movie.title }} ({{ movie.year }})</h5>
+          <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </div>
       </div>
     </div>
+    <div class="text-center mt-3">
+      <pagination-controls
+        (pageChange)="pageChanged($event)"
+      ></pagination-controls>
+    </div>
   </div>
-  <div class="text-center mt-3">
-    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+
+  <!-- Off canvas -->
+
+  <div
+    class="offcanvas offcanvas-end w-50"
+    tabindex="-1"
+    id="offcanvasRight"
+    aria-labelledby="offcanvasRightLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasRightLabel">
+        {{ movieDetails?.title }} ({{ movieDetails?.year }})
+      </h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+
+    <div class="offcanvas-body">
+      <div class="container">
+      <p>{{ movieDetails?.info.plot }}</p>
+      <div class="card" >
+        <div class="card-body text-center p-5" style="height: 50%;" >
+          <img
+            [src]="movieDetails?.info.image_url"
+            style="height: 200px; width: 150px"
+            alt="Movie"
+          onerror="this.src='https://imgs.search.brave.com/jMPHFRyncWAsk-MmJKBMnP7U6TwY7L5Nu7uBY094v-o/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE1/MzY0NDAxMzY2Mjgt/ODQ5YzE3N2U3NmEx/P3E9ODAmdz0xMDAw/JmF1dG89Zm9ybWF0/JmZpdD1jcm9wJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4Tkh4OFky/bHVaVzFoZkdWdWZE/QjhmREI4Zkh3dw.jpeg'"
+
+          />
+        </div>
+      </div>
+
+      </div>
+
+      <li for="">Rating : {{ movieDetails?.info.rating }}</li>
+      <li for="">RunTime : {{ movieDetails?.info.running_time_secs }}</li>
+      <li for="">Directors : {{ movieDetails?.info.directors }}</li>
+      <li for="">Rank : {{ movieDetails?.info.rank }}</li>
+      <li for="">Cast : {{ movieDetails?.info.actors }}</li>
+    </div>
   </div>
 </div>
 
-<!-- Off canvas -->
-
-<div class="offcanvas offcanvas-end w-50" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasRightLabel">
-      {{ movieDetails?.title }} ({{ movieDetails?.year }})
-    </h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-
-  <div class="offcanvas-body">
-    <div class="container">
-      <div class="card">
-
+<div *ngIf="!showFilterData">
+  <div class="container text-center">
+    <div class="row row-cols-2">
+      <div class="col" *ngFor="let movie of displyGridMovies">
+        <div class="card">
+          <div class="card-body">
+            <img
+              [src]="movie.info.image_url"
+              style="height: 200px; width: 150px"
+              alt=""
+            />
+            <h5>{{ movie.title }} ({{ movie.year }})</h5>
+          </div>
+        </div>
       </div>
     </div>
-    <p>{{ movieDetails?.info.plot }}</p>
-
-    <li for="">Rating : {{ movieDetails?.info.rating }} </li>
-    <li for="">RunTime : {{ movieDetails?.info.running_time_secs }}</li>
-    <li for="">Directors : {{ movieDetails?.info.directors }}</li>
-    <li for="">Rank : {{ movieDetails?.info.rank }}</li>
-    <li for="">Cast : {{ movieDetails?.info.actors }}</li>
   </div>
 </div>

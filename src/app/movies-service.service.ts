@@ -8,10 +8,15 @@ import { Movie } from './movies.model';
 })
 export class MoviesServiceService {
   public movies: Movie[] = moviesData;
+  filters: any = {};
 
   constructor() { }
 
   public getMoviesData() {
     return of(this.movies);
+  }
+
+  setFilters(newFilters: any): void {
+    this.filters = { ...newFilters };
   }
 }
